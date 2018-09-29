@@ -12,6 +12,8 @@ public final class ListMasterService {
 
     var store = [Project : Set<Task>]()
     
+    public init() {}
+    
 }
 
 extension ListMasterService: ListMasterServiceSetProtocol {
