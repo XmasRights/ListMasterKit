@@ -10,11 +10,11 @@ import Foundation
 
 protocol ListMasterServiceGetProtocol {
     
-    var allTasks: Set<Task> { get }
+    var allTasks: [Task] { get }
     
-    func allTasks(in project: Project) -> Set<Task>?
+    func allTasks(in project: Project) -> [Task]?
     
-    var allProjects: Set<Project> { get }
+    var allProjects: [Project] { get }
 
 }
 

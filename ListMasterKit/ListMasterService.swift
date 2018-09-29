@@ -10,7 +10,7 @@ import Foundation
 
 public final class ListMasterService {
 
-    var store = [Project : Set<Task>]()
+    var store = [Project : [Task]]()
     
     public init() {}
     
@@ -21,22 +21,32 @@ extension ListMasterService: ListMasterServiceSetProtocol {
     func add(task: Task) {
         
         var entry = store[task.project] ?? []
-        entry.insert(task)
+        
+        guard !entry.contains(where: { $0 == task }) else {
+            return
+        }
+        
+        entry.append(task)
         
         store[task.project] = entry
     }
     
     func remove(task: Task) {
         
-        guard var entry = store[task.project] else { return }
+        guard var entry = store[task.project] else {
+            return
+        }
         
-        entry.remove(task)
+        entry.removeAll(where: { $0 == task })
         store[task.project] = entry
     }
     
     func add(project: Project) {
         
-        guard store[project] == nil else { return }
+        guard store[project] == nil else {
+            return
+        }
+        
         store[project] = []
     }
     
@@ -48,19 +58,15 @@ extension ListMasterService: ListMasterServiceSetProtocol {
 
 extension ListMasterService: ListMasterServiceGetProtocol {
     
-    var allTasks: Set<Task> {
-        
-        return store.reduce(into: Set<Task>()) { (acc, args) in
-            let (_, tasks) = args
-            acc = acc.union(tasks)
-        }
+    var allTasks: [Task] {
+        return store.map { $0.value }.flatMap { $0 }
     }
     
-    func allTasks(in project: Project) -> Set<Task>? {
+    func allTasks(in project: Project) -> [Task]? {
         return store[project]
     }
     
-    var allProjects: Set<Project> {
-        return Set(store.keys)
+    var allProjects: [Project] {
+        return Array(store.keys)
     }
 }
