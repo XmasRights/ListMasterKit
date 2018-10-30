@@ -18,7 +18,7 @@ public final class ListMasterService {
 
 extension ListMasterService: ListMasterServiceSetProtocol {
     
-    func add(task: Task) {
+    public func add(task: Task) {
         
         var entry = store[task.project] ?? []
         
@@ -31,7 +31,7 @@ extension ListMasterService: ListMasterServiceSetProtocol {
         store[task.project] = entry
     }
     
-    func remove(task: Task) {
+    public func remove(task: Task) {
         
         guard var entry = store[task.project] else {
             return
@@ -41,7 +41,7 @@ extension ListMasterService: ListMasterServiceSetProtocol {
         store[task.project] = entry
     }
     
-    func add(project: Project) {
+    public func add(project: Project) {
         
         guard store[project] == nil else {
             return
@@ -50,7 +50,7 @@ extension ListMasterService: ListMasterServiceSetProtocol {
         store[project] = []
     }
     
-    func remove(project: Project) {
+    public func remove(project: Project) {
         
         store.removeValue(forKey: project)
     }
@@ -58,15 +58,15 @@ extension ListMasterService: ListMasterServiceSetProtocol {
 
 extension ListMasterService: ListMasterServiceGetProtocol {
     
-    var allTasks: [Task] {
+    public var allTasks: [Task] {
         return store.map { $0.value }.flatMap { $0 }
     }
     
-    func allTasks(in project: Project) -> [Task]? {
+    public func allTasks(in project: Project) -> [Task]? {
         return store[project]
     }
     
-    var allProjects: [Project] {
+    public var allProjects: [Project] {
         return Array(store.keys)
     }
 }
